@@ -1,0 +1,48 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Exclude large files
+node.exe binary -text
+*.exe binary -text
+*.dll binary -text
+*.so binary -text
+*.dylib binary -text
+
+# Custom for Visual Studio
+*.cs     diff=csharp
+*.sln    merge=union
+*.csproj merge=union
+*.vbproj merge=union
+*.fsproj merge=union
+*.dbproj merge=union
+
+# Standard to msysgit
+*.doc    diff=astextplain
+*.DOC    diff=astextplain
+*.docx   diff=astextplain
+*.DOCX   diff=astextplain
+*.dot    diff=astextplain
+*.DOT    diff=astextplain
+*.pdf    diff=astextplain
+*.PDF    diff=astextplain
+*.rtf    diff=astextplain
+*.RTF    diff=astextplain
+
+# Image files
+*.png    binary
+*.jpg    binary
+*.gif    binary
+*.ico    binary
+*.svg    text
+
+# Audio files
+*.mp3    binary
+*.ogg    binary
+*.flac   binary
+
+# Video files
+*.mp4    binary
+*.webm   binary
+*.mov    binary
+*.avi    binary
+*.wmv    binary
