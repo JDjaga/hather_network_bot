@@ -9,5 +9,10 @@ services:
         value: production
       - key: REACT_APP_API_URL
         value: https://your-api-url.com
+      - key: CI
+        value: false
     healthCheckPath: /
-    autoDeploy: true 
+    autoDeploy: true
+    plan: free
+    region: oregon
+    nodeVersion: 16.18.0 
