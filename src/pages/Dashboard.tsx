@@ -51,12 +51,9 @@ interface NFT {
 
 interface Transaction {
   id: string;
-  type: 'buy' | 'sell' | 'transfer';
-  asset: string;
+  type: 'purchase' | 'transfer' | 'gift';
   amount: number;
-  value: number;
   date: string;
-  chain: string;
   status: 'completed' | 'pending' | 'failed';
 }
 
@@ -101,33 +98,24 @@ const nftData: NFT[] = [
 const transactionData: Transaction[] = [
   {
     id: '1',
-    type: 'buy',
-    asset: 'Bored Ape #1234',
-    amount: 1,
-    value: 25000,
-    date: '2024-01-15',
-    chain: 'ethereum',
+    type: 'purchase',
+    amount: 100,
+    date: '2024-04-10T12:00:00Z',
     status: 'completed'
   },
   {
     id: '2',
-    type: 'sell',
-    asset: 'CryptoPunk #5678',
-    amount: 1,
-    value: 18000,
-    date: '2024-01-10',
-    chain: 'ethereum',
-    status: 'completed'
+    type: 'transfer',
+    amount: 50,
+    date: '2024-04-09T15:30:00Z',
+    status: 'pending'
   },
   {
     id: '3',
-    type: 'transfer',
-    asset: 'Hathor NFT #9012',
-    amount: 1,
-    value: 12000,
-    date: '2024-01-05',
-    chain: 'hathor',
-    status: 'pending'
+    type: 'gift',
+    amount: 25,
+    date: '2024-04-08T09:15:00Z',
+    status: 'completed'
   }
 ];
 

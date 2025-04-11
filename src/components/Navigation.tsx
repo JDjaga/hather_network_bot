@@ -11,6 +11,7 @@ import {
   Button,
   Spacer,
   Heading,
+  useToast,
 } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -140,12 +141,32 @@ const Navigation: React.FC = () => {
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const { colorMode, toggleColorMode } = useColorMode();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const toast = useToast();
   
   // Move all useColorModeValue hooks to the top level
   const navBgColor = useColorModeValue('white', 'gray.800');
   const activeBgColor = useColorModeValue('brand.50', 'brand.900');
   const textColor = useColorModeValue('gray.600', 'gray.400');
   const activeTextColor = useColorModeValue('brand.500', 'brand.300');
+
+  const handleThemeChange = (theme: string) => {
+    if (theme === 'dark' && colorMode === 'light') {
+      toggleColorMode();
+    } else if (theme === 'light' && colorMode === 'dark') {
+      toggleColorMode();
+    }
+  };
+
+  const handleLanguageChange = (language: string) => {
+    // Add language change logic here
+    toast({
+      title: 'Language Updated',
+      description: `Switched to ${language}`,
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+    });
+  };
 
   return (
     <Box
@@ -237,6 +258,8 @@ const Navigation: React.FC = () => {
       <ThemeSettings
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
+        onThemeChange={handleThemeChange}
+        onLanguageChange={handleLanguageChange}
       />
     </Box>
   );

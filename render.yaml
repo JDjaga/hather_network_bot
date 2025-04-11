@@ -15,4 +15,4 @@ services:
     autoDeploy: true
     plan: free
     region: oregon
-    nodeVersion: 16.18.0 
+    nodeVersion: 20 
