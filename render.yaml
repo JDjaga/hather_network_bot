@@ -2,7 +2,7 @@ services:
   - type: web
     name: nft-ticketing-hub
     env: node
-    buildCommand: npm install && npm install react-scripts && npm run build
+    buildCommand: npm install --production=false && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
