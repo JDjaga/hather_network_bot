@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Text,
@@ -7,13 +7,6 @@ import {
   Icon,
   Badge,
   useColorModeValue,
-  Divider,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   Button,
   Flex,
   Select,

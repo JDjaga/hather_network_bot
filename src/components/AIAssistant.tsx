@@ -24,7 +24,8 @@ import {
   TagCloseButton,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { FaRobot, FaTicketAlt, FaCalendarAlt, FaThumbsUp, FaThumbsDown, FaSearch, FaFilter, FaChevronRight } from 'react-icons/fa';
+import { FaRobot, FaTicketAlt, FaCalendarAlt, FaThumbsUp, FaThumbsDown, FaSearch, FaFilter, FaChevronRight, FaPaperPlane } from 'react-icons/fa';
+import type { IconType } from 'react-icons';
 
 const MotionBox = motion(Box);
 
@@ -227,40 +228,17 @@ const AIAssistant: React.FC = () => {
 
   return (
     <MotionBox
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
       p={6}
+      borderRadius="lg"
       bg={bgColor}
-      borderRadius="xl"
-      borderWidth="1px"
-      borderColor={borderColor}
       boxShadow="lg"
-      whileHover={{
-        boxShadow: "0 0 30px rgba(0,0,0,0.1)",
-        transition: { duration: 0.3 }
-      }}
     >
-      <MotionBox
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ 
-          type: "spring",
-          stiffness: 100,
-          damping: 10,
-          duration: 0.5 
-        }}
-        p={4}
-        borderRadius="lg"
-        boxShadow="0 0 20px rgba(0,0,0,0.1)"
-        whileHover={{
-          boxShadow: "0 0 30px rgba(0,0,0,0.2)",
-          scale: 1.01,
-          transition: { duration: 0.2 }
-        }}
-      >
+      <VStack spacing={4} align="stretch">
         <HStack mb={4}>
-          <Icon as={FaRobot} w={6} h={6} color="brand.500" />
+          <Icon as={FaRobot as unknown as IconType} w={6} h={6} color="brand.500" />
           <Text fontSize="xl" fontWeight="bold">
             AI Assistant
           </Text>
@@ -268,7 +246,7 @@ const AIAssistant: React.FC = () => {
             Powered by AI
           </Badge>
         </HStack>
-      </MotionBox>
+      </VStack>
 
       <Box 
         height="300px" 

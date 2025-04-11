@@ -1,22 +1,13 @@
-import React from 'react';
-import {
-  Box,
-  VStack,
-  HStack,
-  Text,
-  Icon,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, VStack, HStack, Text, Icon, useColorModeValue } from '@chakra-ui/react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { motion } from 'framer-motion';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
-
-const MotionBox = motion(Box);
+import type { IconType } from 'react-icons';
 
 interface PortfolioItem {
   name: string;
   value: number;
   percentage: number;
-  icon: any;
+  icon: IconType;
   color: string;
 }
 
@@ -24,6 +15,8 @@ interface PortfolioChartProps {
   data: PortfolioItem[];
   totalValue: number;
 }
+
+const MotionBox = motion(Box);
 
 const PortfolioChart: React.FC<PortfolioChartProps> = ({ data, totalValue }) => {
   const bgColor = useColorModeValue('white', 'gray.800');
@@ -100,7 +93,7 @@ const PortfolioChart: React.FC<PortfolioChartProps> = ({ data, totalValue }) => 
             ${totalValue.toLocaleString()}
           </Text>
         </HStack>
-
+        
         <Box height="300px">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -132,7 +125,7 @@ const PortfolioChart: React.FC<PortfolioChartProps> = ({ data, totalValue }) => 
         </Box>
 
         <VStack spacing={4} align="stretch">
-          {chartData.map((item, index) => (
+          {chartData.map((item) => (
             <MotionBox
               key={item.name}
               variants={itemVariants}
@@ -140,7 +133,7 @@ const PortfolioChart: React.FC<PortfolioChartProps> = ({ data, totalValue }) => 
             >
               <HStack justify="space-between" p={3} borderRadius="md" bg={cardBgColor}>
                 <HStack>
-                  <Icon as={item.icon} w={6} h={6} color={item.color} />
+                  <Icon as={item.icon as unknown as IconType} w={6} h={6} color={item.color} />
                   <Text fontWeight="medium">{item.name}</Text>
                 </HStack>
                 <HStack spacing={4}>
