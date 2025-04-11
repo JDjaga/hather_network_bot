@@ -35,7 +35,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"node src/server/telegramBot.js\"",
+    "start": "concurrently \"react-scripts start\" \"node server/telegramBot.js\"",
     "frontend": "react-scripts start",
     "build": "npm install --production=false && react-scripts build",
     "test": "react-scripts test",
