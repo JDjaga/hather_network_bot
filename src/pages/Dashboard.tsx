@@ -186,7 +186,13 @@ const Dashboard = () => {
   };
 
   return (
-    <Box p={8}>
+    <Box p={8} height="100vh" overflowY="auto" sx={{
+      '::-webkit-scrollbar': {
+        display: 'none', // Hides the scrollbar in WebKit-based browsers (Chrome, Safari)
+      },
+      '-ms-overflow-style': 'none',  // Hides the scrollbar in Internet Explorer 10 and 11
+      'scrollbar-width': 'none',  // Hides the scrollbar in Firefox
+    }}>
       <MotionBox
         initial="hidden"
         animate="visible"
