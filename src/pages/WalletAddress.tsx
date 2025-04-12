@@ -69,6 +69,7 @@ const WalletAddress: React.FC = () => {
             borderColor="gray.200"
             _hover={{ borderColor: glowColor }}
             _focus={{ borderColor: glowColor, boxShadow: `0 0 0 1px ${glowColor}` }}
+            w={{ base: '100%', sm: '90%', md: '70%' }} // Responsive width
           />
 
           <MotionBox
@@ -78,7 +79,7 @@ const WalletAddress: React.FC = () => {
             <GlowBox
               as={Button}
               size="lg"
-              w="200px"
+              w={{ base: '100%', sm: '90%', md: '70%' }} // Responsive width
               colorScheme={glowColor.split('.')[0]}
               onClick={handleConnect}
               glowColor={`var(--chakra-colors-${glowColor})`}

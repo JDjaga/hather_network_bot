@@ -77,8 +77,8 @@ const WalletConnect: React.FC = () => {
           </Text>
         </Box>
 
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-          {walletOptions.map((option) => (
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 2 }} spacing={6}>
+        {walletOptions.map((option) => (
             <GlowBox
               key={option.name}
               p={6}

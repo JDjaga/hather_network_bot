@@ -86,15 +86,15 @@ const PortfolioChart: React.FC<PortfolioChartProps> = ({ data, totalValue }) => 
     >
       <VStack spacing={6} align="stretch">
         <HStack justify="space-between">
-          <Text fontSize="xl" fontWeight="bold">
+          <Text fontSize={{ base: 'md', sm: 'xl' }} fontWeight="bold">
             Portfolio Distribution
           </Text>
-          <Text fontSize="xl" fontWeight="bold" color="brand.500">
+          <Text fontSize={{ base: 'md', sm: 'xl' }} fontWeight="bold" color="brand.500">
             ${totalValue.toLocaleString()}
           </Text>
         </HStack>
         
-        <Box height="300px">
+        <Box height={{ base: '200px', sm: '300px' }}>
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -124,17 +124,17 @@ const PortfolioChart: React.FC<PortfolioChartProps> = ({ data, totalValue }) => 
           </ResponsiveContainer>
         </Box>
 
-        <VStack spacing={4} align="stretch">
+        <VStack spacing={{ base: 2, sm: 4 }} align="stretch">
           {chartData.map((item) => (
             <MotionBox
               key={item.name}
               variants={itemVariants}
               whileHover={{ scale: 1.02 }}
             >
-              <HStack justify="space-between" p={3} borderRadius="md" bg={cardBgColor}>
+              <HStack justify="space-between" p={3} borderRadius="md" bg={cardBgColor} spacing={{ base: 3, sm: 4 }}>
                 <HStack>
                   <Icon as={item.icon as unknown as IconType} w={6} h={6} color={item.color} />
-                  <Text fontWeight="medium">{item.name}</Text>
+                  <Text fontWeight="medium" fontSize={{ base: 'sm', sm: 'md' }}>{item.name}</Text>
                 </HStack>
                 <HStack spacing={4}>
                   <Text color={textColor}>${item.value.toLocaleString()}</Text>
