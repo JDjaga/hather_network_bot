@@ -18,7 +18,7 @@ const AppRoutes: React.FC = () => {
           <Route path="/" element={<Dashboard />} />
           <Route path="/marketplace" element={<TicketMarketplace />} />
           <Route path="/my-tickets" element={<MyTickets />} />
-          <Route path="/connect" element={<WalletConnect />} />
+          <Route path="/walletconnect" element={<WalletConnect />} />
           <Route path="/wallet/:walletId" element={<WalletAddress />} />
         </Routes>
       </AnimatePresence>

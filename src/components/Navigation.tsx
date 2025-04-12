@@ -38,7 +38,7 @@ const navItems: NavItemType[] = [
   { path: '/', label: 'Dashboard', icon: FaHome },
   { path: '/marketplace', label: 'Marketplace', icon: FaShoppingCart },
   { path: '/my-tickets', label: 'My Tickets', icon: FaTicketAlt },
-  { path: '/connect', label: 'Connect Wallet', icon: FaWallet },
+  { path: '/walletconnect', label: 'Connect Wallet', icon: FaWallet },
 ];
 
 const navItemVariants = {

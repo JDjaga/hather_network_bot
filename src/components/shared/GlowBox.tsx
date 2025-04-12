@@ -1,44 +1,62 @@
 import React from 'react';
-import { Box, BoxProps } from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+import { Box, BoxProps, Button, ButtonProps, ComponentWithAs } from '@chakra-ui/react';
+import { motion, MotionProps, HTMLMotionProps } from 'framer-motion';
 
-interface GlowBoxProps extends BoxProps {
+type Merge<P, T> = Omit<P, keyof T> & T;
+type MotionBoxProps = Merge<BoxProps, HTMLMotionProps<'div'>>;
+const MotionBox = motion(Box) as React.ComponentType<MotionBoxProps>;
+
+interface GlowBoxProps extends Omit<MotionBoxProps, 'as'> {
+  children: React.ReactNode;
   glowColor?: string;
   glowIntensity?: number;
-  children: React.ReactNode;
-  as?: React.ElementType;
-  size?: string;
-  colorScheme?: string;
-  onClick?: () => void;
+  as?: ComponentWithAs<any, any>;
 }
 
-const MotionBox = motion(Box);
+type GlowBoxButtonProps = GlowBoxProps & ButtonProps;
 
-const GlowBox: React.FC<GlowBoxProps> = ({
-  children,
-  glowColor = "brand.500",
-  glowIntensity = 0.5,
-  as: Component = Box,
-  ...props
+const GlowBox: React.FC<GlowBoxButtonProps> = ({ 
+  children, 
+  glowColor = 'var(--chakra-colors-brand-500)',
+  glowIntensity = 1,
+  as,
+  ...props 
 }) => {
+  const getGlowEffect = (intensity: number = 1) => {
+    return `0 0 ${20 * intensity}px ${glowColor}, 0 0 ${40 * intensity}px rgba(49, 130, 206, 0.3)`;
+  };
+
+  const motionProps: MotionProps = {
+    initial: { 
+      opacity: 0,
+      y: 20,
+      boxShadow: "0 0 0px rgba(0,0,0,0)" 
+    },
+    animate: { 
+      opacity: 1,
+      y: 0,
+      boxShadow: getGlowEffect(glowIntensity),
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    },
+    whileHover: { 
+      scale: 1.02,
+      boxShadow: getGlowEffect(glowIntensity * 1.5),
+      transition: {
+        duration: 0.2
+      }
+    }
+  };
+
+  const Component = as || Box;
+
   return (
     <MotionBox
       as={Component}
-      initial={{
-        boxShadow: `0 0 0px ${glowColor}`,
-        scale: 1,
-      }}
-      animate={{
-        boxShadow: `0 0 ${20 * glowIntensity}px ${glowColor}`,
-        scale: 1,
-      }}
-      whileHover={{
-        boxShadow: `0 0 ${40 * glowIntensity}px ${glowColor}`,
-        scale: 1.05,
-      }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ duration: 0.3 }}
-      {...props}
+      {...motionProps}
+      {...(props as MotionBoxProps)}
     >
       {children}
     </MotionBox>

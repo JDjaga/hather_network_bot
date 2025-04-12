@@ -33,6 +33,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaBell, FaTelegram, FaCog, FaTrash, FaEdit, FaCheck, FaTimes, FaExclamationTriangle, FaChartLine, FaTicketAlt, FaCalendarAlt } from 'react-icons/fa';
 
 const MotionBox = motion(Box);
+const NotificationItem = motion(Box);
 
 interface Notification {
   id: string;
@@ -120,7 +121,8 @@ const Notifications: React.FC = () => {
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const cardBgColor = useColorModeValue('gray.50', 'gray.700');
-  const hoverBgColor = useColorModeValue('gray.100', 'gray.600');
+  const hoverBgColor = useColorModeValue('gray.50', 'gray.700');
+  const textColor = useColorModeValue('gray.800', 'white');
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -333,20 +335,22 @@ const Notifications: React.FC = () => {
       <VStack spacing={4} align="stretch">
         <AnimatePresence>
           {notifications.map((notification) => (
-            <MotionBox
+            <NotificationItem
               key={notification.id}
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
               p={4}
-              bg={notification.read ? cardBgColor : 'brand.50'}
+              bg={bgColor}
               borderRadius="lg"
-              borderLeft="4px solid"
-              borderLeftColor={`${getPriorityColor(notification.priority)}.500`}
+              borderWidth="1px"
+              borderColor={borderColor}
+              boxShadow="sm"
+              cursor="pointer"
+              transition={{ duration: 0.2 }}
+              _hover={{ bg: hoverBgColor }}
               whileHover={{ 
                 scale: 1.01,
-                bg: hoverBgColor,
                 transition: { duration: 0.2 }
               }}
             >
@@ -448,7 +452,7 @@ const Notifications: React.FC = () => {
                   </HStack>
                 </>
               )}
-            </MotionBox>
+            </NotificationItem>
           ))}
         </AnimatePresence>
       </VStack>

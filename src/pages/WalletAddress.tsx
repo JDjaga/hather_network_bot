@@ -8,9 +8,8 @@ import {
   Button,
   useColorModeValue,
   Icon,
-  HStack,
 } from '@chakra-ui/react';
-import { FaWallet } from 'react-icons/fa';
+import { FaWallet} from 'react-icons/fa';
 import { useParams, useNavigate } from 'react-router-dom';
 import GlowBox from '../components/shared/GlowBox';
 import { motion } from 'framer-motion';
@@ -31,12 +30,13 @@ const walletIcons: { [key: string]: any } = {
   hathor: 'FaBtc',
 };
 
-const WalletAddress = () => {
+const WalletAddress: React.FC = () => {
   const { walletId } = useParams<{ walletId: string }>();
   const navigate = useNavigate();
   const [address, setAddress] = useState('');
   const bgColor = useColorModeValue('white', 'gray.800');
-  const glowColor = walletId ? walletColors[walletId] : 'brand.500';
+  const textColor = useColorModeValue('gray.800', 'white');
+  const glowColor = 'brand.500';
 
   const handleConnect = () => {
     // Here you would typically validate the address and connect to the wallet
@@ -81,7 +81,7 @@ const WalletAddress = () => {
               w="200px"
               colorScheme={glowColor.split('.')[0]}
               onClick={handleConnect}
-              glowColor={glowColor}
+              glowColor={`var(--chakra-colors-${glowColor})`}
               glowIntensity={0.8}
               whileHover={{
                 boxShadow: `0 0 30px var(--chakra-colors-${glowColor.replace('.', '-')}), 0 0 50px rgba(49, 130, 206, 0.3)`,

@@ -5,12 +5,12 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Grid,
   Icon,
   HStack,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { FaWallet, FaEthereum, FaBtc } from 'react-icons/fa';
+import { FaWallet, FaEthereum, FaBtc, FaBitcoin } from 'react-icons/fa';
 import { SiBinance, SiPolygon } from 'react-icons/si';
 import GlowBox from '../components/shared/GlowBox';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +22,7 @@ interface WalletOptionProps {
   name: string;
   icon: any;
   color: string;
+  description: string;
 }
 
 const walletOptions: WalletOptionProps[] = [
@@ -29,73 +30,40 @@ const walletOptions: WalletOptionProps[] = [
     id: 'metamask',
     name: 'MetaMask',
     icon: FaEthereum,
-    color: 'orange.500',
+    color: 'var(--chakra-colors-orange-500)',
+    description: 'Connect using MetaMask wallet'
   },
   {
     id: 'binance',
     name: 'Binance Wallet',
     icon: SiBinance,
-    color: 'yellow.500',
+    color: 'var(--chakra-colors-yellow-500)',
+    description: 'Connect using Binance wallet'
   },
   {
     id: 'polygon',
     name: 'Polygon Wallet',
     icon: SiPolygon,
-    color: 'purple.500',
+    color: 'var(--chakra-colors-purple-500)',
+    description: 'Connect using Polygon wallet'
   },
   {
     id: 'hathor',
     name: 'Hathor Wallet',
-    icon: FaBtc,
-    color: 'blue.500',
+    icon: FaBitcoin,
+    color: 'var(--chakra-colors-blue-500)',
+    description: 'Connect using Hathor wallet'
   },
 ];
 
-const WalletOption = ({ option }: { option: WalletOptionProps }) => {
-  const bgColor = useColorModeValue('white', 'gray.800');
+const WalletConnect: React.FC = () => {
   const navigate = useNavigate();
+  const bgColor = useColorModeValue('white', 'gray.800');
 
-  const handleClick = () => {
-    navigate(`/wallet/${option.id}`);
+  const handleConnect = (wallet: string) => {
+    navigate(`/wallet/${wallet}`);
   };
 
-  return (
-    <MotionBox
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      onClick={handleClick}
-      cursor="pointer"
-    >
-      <GlowBox
-        p={6}
-        bg={bgColor}
-        borderRadius="xl"
-        boxShadow="lg"
-        glowColor={option.color}
-        glowIntensity={0.8}
-        whileHover={{
-          scale: 1.05,
-          boxShadow: `0 0 30px var(--chakra-colors-${option.color.replace('.', '-')}), 0 0 50px rgba(49, 130, 206, 0.3)`,
-          transition: {
-            type: "spring",
-            stiffness: 300,
-            damping: 10
-          }
-        }}
-      >
-        <HStack spacing={4} w="100%" justify="center">
-          <Icon as={option.icon} w={8} h={8} color={option.color} />
-          <Text fontSize="lg" fontWeight="bold">
-            {option.name}
-          </Text>
-        </HStack>
-      </GlowBox>
-    </MotionBox>
-  );
-};
-
-const WalletConnect = () => {
   return (
     <Box p={8}>
       <VStack spacing={8} align="stretch">
@@ -109,16 +77,39 @@ const WalletConnect = () => {
           </Text>
         </Box>
 
-        <Grid
-          templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
-          gap={6}
-          maxW="800px"
-          mx="auto"
-        >
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
           {walletOptions.map((option) => (
-            <WalletOption key={option.id} option={option} />
+            <GlowBox
+              key={option.name}
+              p={6}
+              bg={bgColor}
+              borderRadius="xl"
+              boxShadow="lg"
+              glowColor={option.color}
+              glowIntensity={0.8}
+              onClick={() => handleConnect(option.name)}
+              cursor="pointer"
+              role="group"
+            >
+              <HStack spacing={4}>
+                <Icon
+                  as={option.icon}
+                  w={8}
+                  h={8}
+                  color={option.color}
+                />
+                <VStack align="start" spacing={1}>
+                  <Text fontWeight="bold" fontSize="lg">
+                    {option.name}
+                  </Text>
+                  <Text fontSize="sm" color="gray.500">
+                    {option.description}
+                  </Text>
+                </VStack>
+              </HStack>
+            </GlowBox>
           ))}
-        </Grid>
+        </SimpleGrid>
       </VStack>
     </Box>
   );
