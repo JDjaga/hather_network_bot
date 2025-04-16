@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import {
   Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay,
-  VStack, Box, Heading, Spacer, Icon, useDisclosure, useColorModeValue, useColorMode, useToast, HStack, Text
+  VStack, Box, Heading, Spacer, Icon, useDisclosure, useColorModeValue, useColorMode, useToast,
+  HStack, Text, Divider
 } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  FaHome, FaTicketAlt, FaWallet, FaShoppingCart, FaCog, FaMoon, FaSun
+  FaHome, FaTicketAlt, FaWallet, FaShoppingCart, FaCog, FaMoon, FaSun, FaSignOutAlt, FaBars
 } from 'react-icons/fa';
 import ThemeSettings from './ThemeSettings';
+import { useBreakpointValue } from '@chakra-ui/react';
 
 const MotionBox = motion(Box);
+
+// ✅ Variants for animated buttons
+const buttonVariants = {
+  initial: { scale: 1 },
+  hover: { scale: 1.03, transition: { duration: 0.2 } },
+  tap: { scale: 0.97, transition: { duration: 0.1 } },
+};
 
 interface NavItemType {
   path: string;
@@ -38,8 +47,6 @@ const navItemVariants = {
   }
 };
 
-const buttonVariants = navItemVariants;
-
 const NavItemComponent = ({ item, isActive }: { item: NavItemType; isActive: boolean }) => {
   const activeBgColor = useColorModeValue('brand.50', 'gray.700');
   const textColor = useColorModeValue('gray.600', 'gray.300');
@@ -47,9 +54,22 @@ const NavItemComponent = ({ item, isActive }: { item: NavItemType; isActive: boo
 
   return (
     <Link to={item.path}>
-      <MotionBox variants={navItemVariants} initial="initial" whileHover="hover" whileTap="tap">
+      <MotionBox variants={navItemVariants} initial="initial" whileHover="hover" whileTap="tap" position="relative">
+        {isActive && (
+          <MotionBox
+            layoutId="active-indicator"
+            position="absolute"
+            left={0}
+            top={0}
+            bottom={0}
+            width="4px"
+            bg="brand.500"
+            borderRadius="md"
+          />
+        )}
         <MotionBox
           p={3}
+          pl={isActive ? 6 : 3}
           borderRadius="lg"
           bg={isActive ? activeBgColor : 'transparent'}
           color={isActive ? activeTextColor : textColor}
@@ -59,9 +79,7 @@ const NavItemComponent = ({ item, isActive }: { item: NavItemType; isActive: boo
         >
           <HStack spacing={3} justifyContent="flex-start">
             <Icon as={item.icon} w={5} h={5} />
-            <Text fontWeight="medium" display="block" textAlign="left">
-              {item.label}
-            </Text>
+            <Text fontWeight="medium">{item.label}</Text>
           </HStack>
         </MotionBox>
       </MotionBox>
@@ -99,6 +117,17 @@ const Navigation: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    const handleSwipe = (e: TouchEvent) => {
+      if (e.changedTouches[0].clientX < 60) onOpen();
+    };
+    window.addEventListener('touchstart', handleSwipe);
+    return () => window.removeEventListener('touchstart', handleSwipe);
+  }, [onOpen]);
+
+  // Breakpoint for drawer size
+  const drawerSize = useBreakpointValue({ base: 'xs', sm: 'sm', md: 'md' });
+
   return (
     <>
       {/* Mobile Menu Button */}
@@ -109,18 +138,20 @@ const Navigation: React.FC = () => {
         top="20px"
         left="20px"
         zIndex={1001}
+        p={2}
+        margin={0} // Reduced padding around the button
       >
-        Open Menu
+        <Icon as={FaBars} w={6} h={6} />
       </Button>
 
       {/* Mobile Drawer */}
-      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose} size={drawerSize}>
         <DrawerOverlay />
         <DrawerContent bg={drawerBgColor}>
           <DrawerCloseButton />
-          <DrawerHeader color={drawerHeaderColor}>NFT Hub</DrawerHeader>
-          <DrawerBody color={drawerBodyColor}>
-            <VStack spacing={2} align="stretch">
+          <DrawerHeader color={drawerHeaderColor}></DrawerHeader>
+          <DrawerBody color={drawerBodyColor} p={0}>
+            <VStack spacing={2} align="stretch" m={0} p={0}> {/* Ensure no extra margins or padding */}
               {navItems.map((item) => (
                 <NavItemComponent
                   key={item.path}
@@ -128,6 +159,16 @@ const Navigation: React.FC = () => {
                   isActive={location.pathname === item.path}
                 />
               ))}
+              <Divider />
+              <Button
+                leftIcon={<FaSignOutAlt />}
+                variant="ghost"
+                justifyContent="flex-start"
+                width="100%"
+                onClick={() => toast({ title: 'Logged out', status: 'info', duration: 2000 })}
+              >
+                Logout
+              </Button>
 
               {/* Settings Button */}
               <MotionBox variants={buttonVariants} whileHover="hover" whileTap="tap" initial="initial" width="100%">
@@ -144,7 +185,7 @@ const Navigation: React.FC = () => {
                 </Button>
               </MotionBox>
 
-              {/* Dark Mode Toggle */}
+              {/* Theme Toggle */}
               <MotionBox variants={buttonVariants} whileHover="hover" whileTap="tap" initial="initial" width="100%">
                 <Button
                   leftIcon={<Icon as={colorMode === 'light' ? FaMoon : FaSun} />}
@@ -163,83 +204,73 @@ const Navigation: React.FC = () => {
         </DrawerContent>
       </Drawer>
 
-      {/* Sidebar for Desktop */}
+      {/* Desktop Sidebar */}
       <Box
         as="nav"
         position="fixed"
         left={0}
         top={0}
         bottom={0}
-        width="240px"
+        width={{ base: '70px', sm: '240px' }} // Adjust sidebar width based on screen size
         bg={navBgColor}
         borderRight="1px"
         p={4}
         zIndex={1000}
         display={{ base: "none", md: "block" }}
+        
       >
         <VStack spacing={8} align="stretch" height="100%">
-          <Box>
-            <Heading
-              size="lg"
-              bgGradient="linear(to-r, brand.500, blue.500)"
-              bgClip="text"
-              textAlign="center"
-              mb={4}
-            >
-              NFT Hub
-            </Heading>
-            <VStack spacing={2} align="stretch">
-              {navItems.map((item) => (
-                <NavItemComponent
-                  key={item.path}
-                  item={item}
-                  isActive={location.pathname === item.path}
-                />
-              ))}
-            </VStack>
-          </Box>
+          <VStack spacing={2} align="stretch">
+            {navItems.map((item) => (
+              <NavItemComponent
+                key={item.path}
+                item={item}
+                isActive={location.pathname === item.path}
+              />
+            ))}
+          </VStack>
 
           <Spacer />
 
           <VStack spacing={4} align="stretch" width="100%">
-            <MotionBox variants={buttonVariants} whileHover="hover" whileTap="tap" initial="initial" width="100%">
-              <Button
-                leftIcon={<Icon as={FaCog} />}
-                variant="ghost"
-                width="100%"
-                justifyContent="flex-start"
-                onClick={() => setIsSettingsOpen(true)}
-                color={textColor}
-                _hover={{ bg: activeBgColor, color: activeTextColor }}
-              >
-                Settings
-              </Button>
-            </MotionBox>
+            <Button
+              leftIcon={<FaSignOutAlt />}
+              variant="ghost"
+              justifyContent="flex-start"
+              width="100%"
+              onClick={() => toast({ title: 'Logged out', status: 'info', duration: 2000 })}
+            >
+              Logout
+            </Button>
 
-            <MotionBox variants={buttonVariants} whileHover="hover" whileTap="tap" initial="initial" width="100%">
-              <Button
-                leftIcon={<Icon as={colorMode === 'light' ? FaMoon : FaSun} />}
-                variant="ghost"
-                width="100%"
-                justifyContent="flex-start"
-                onClick={toggleColorMode}
-                color={textColor}
-                _hover={{ bg: activeBgColor, color: activeTextColor }}
-              >
-                {colorMode === 'light' ? 'Dark Mode' : 'Light Mode'}
-              </Button>
-            </MotionBox>
+            {/* Settings Button */}
+            <Button
+              leftIcon={<Icon as={FaCog} />}
+              variant="ghost"
+              width="100%"
+              justifyContent="flex-start"
+              onClick={() => setIsSettingsOpen(true)}
+              color={textColor}
+              _hover={{ bg: activeBgColor, color: activeTextColor }}
+            >
+              Settings
+            </Button>
+
+            {/* Theme Toggle */}
+            <Button
+              leftIcon={<Icon as={colorMode === 'light' ? FaMoon : FaSun} />}
+              variant="ghost"
+              width="100%"
+              justifyContent="flex-start"
+              onClick={toggleColorMode}
+              color={textColor}
+              _hover={{ bg: activeBgColor, color: activeTextColor }}
+            >
+              {colorMode === 'light' ? 'Dark Mode' : 'Light Mode'}
+            </Button>
           </VStack>
         </VStack>
       </Box>
-
-      {/* Theme Settings Modal */}
-      <ThemeSettings
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-        onThemeChange={handleThemeChange}
-        onLanguageChange={handleLanguageChange}
-      />
     </>
   );
 };

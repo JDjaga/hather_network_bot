@@ -12,7 +12,21 @@ import WalletAddress from './pages/WalletAddress';
 
 const AppRoutes: React.FC = () => {
   return (
-    <Box minH="100vh" pb="80px" ml="240px">
+    <Box 
+      minH="100vh"
+      pb={{ base: "100px", md: "80px" }}
+      ml={{ base: "0", md: "240px" }}
+      w={{ base: "100%", md: "calc(100% - 240px)" }}
+      px={{ base: "4", md: "8" }}
+      pt={{ base: "20", md: "8" }}
+      position="relative"
+      overflow="auto"
+      display="flex"
+      flexDirection="column"
+      alignItems="stretch"
+      maxW={{ base: "100%", md: "1600px" }}
+      mx="auto"
+    >
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={<Dashboard />} />
@@ -26,4 +40,4 @@ const AppRoutes: React.FC = () => {
   );
 };
 
-export default AppRoutes; 
+export default AppRoutes;
