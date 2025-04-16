@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import {
   Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay,
-  VStack, Box, Heading, Spacer, Icon, useDisclosure
+  VStack, Box, Heading, Spacer, Icon, useDisclosure, useColorModeValue, useColorMode, useToast, HStack, Text
 } from '@chakra-ui/react';
-import { HStack, Text, useColorModeValue, useColorMode, useToast } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -42,27 +41,19 @@ const navItemVariants = {
 const buttonVariants = navItemVariants;
 
 const NavItemComponent = ({ item, isActive }: { item: NavItemType; isActive: boolean }) => {
-  const activeBgColor = useColorModeValue('brand.50', 'brand.900');
-  const textColor = useColorModeValue('gray.600', 'gray.400');
-  const activeTextColor = useColorModeValue('brand.500', 'brand.300');
+  const activeBgColor = useColorModeValue('brand.50', 'gray.700');
+  const textColor = useColorModeValue('gray.600', 'gray.300');
+  const activeTextColor = useColorModeValue('brand.500', 'brand.200');
 
   return (
     <Link to={item.path}>
-      <MotionBox
-        variants={navItemVariants}
-        initial="initial"
-        whileHover="hover"
-        whileTap="tap"
-      >
+      <MotionBox variants={navItemVariants} initial="initial" whileHover="hover" whileTap="tap">
         <MotionBox
           p={3}
           borderRadius="lg"
           bg={isActive ? activeBgColor : 'transparent'}
           color={isActive ? activeTextColor : textColor}
-          _hover={{
-            bg: activeBgColor,
-            color: activeTextColor,
-          }}
+          _hover={{ bg: activeBgColor, color: activeTextColor }}
           transition={{ duration: 0.2 }}
           boxShadow={isActive ? "0 0 10px rgba(0,0,0,0.1)" : "none"}
         >
@@ -85,10 +76,13 @@ const Navigation: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const navBgColor = useColorModeValue('white', 'gray.800');
-  const activeBgColor = useColorModeValue('brand.50', 'brand.900');
-  const textColor = useColorModeValue('gray.600', 'gray.400');
-  const activeTextColor = useColorModeValue('brand.500', 'brand.300');
+  const navBgColor = useColorModeValue('white', 'gray.900');
+  const drawerBgColor = useColorModeValue('white', 'gray.900');
+  const drawerHeaderColor = useColorModeValue('gray.700', 'gray.200');
+  const drawerBodyColor = useColorModeValue('gray.600', 'gray.300');
+  const activeBgColor = useColorModeValue('brand.50', 'gray.700');
+  const textColor = useColorModeValue('gray.600', 'gray.300');
+  const activeTextColor = useColorModeValue('brand.500', 'brand.200');
 
   const handleThemeChange = (theme: string) => {
     if (theme === 'dark' && colorMode === 'light') toggleColorMode();
@@ -107,6 +101,7 @@ const Navigation: React.FC = () => {
 
   return (
     <>
+      {/* Mobile Menu Button */}
       <Button
         onClick={onOpen}
         display={{ base: "inline-block", md: "none" }}
@@ -118,12 +113,13 @@ const Navigation: React.FC = () => {
         Open Menu
       </Button>
 
+      {/* Mobile Drawer */}
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent bg={drawerBgColor}>
           <DrawerCloseButton />
-          <DrawerHeader>NFT Hub</DrawerHeader>
-          <DrawerBody>
+          <DrawerHeader color={drawerHeaderColor}>NFT Hub</DrawerHeader>
+          <DrawerBody color={drawerBodyColor}>
             <VStack spacing={2} align="stretch">
               {navItems.map((item) => (
                 <NavItemComponent
@@ -133,6 +129,7 @@ const Navigation: React.FC = () => {
                 />
               ))}
 
+              {/* Settings Button */}
               <MotionBox variants={buttonVariants} whileHover="hover" whileTap="tap" initial="initial" width="100%">
                 <Button
                   leftIcon={<Icon as={FaCog} />}
@@ -147,6 +144,7 @@ const Navigation: React.FC = () => {
                 </Button>
               </MotionBox>
 
+              {/* Dark Mode Toggle */}
               <MotionBox variants={buttonVariants} whileHover="hover" whileTap="tap" initial="initial" width="100%">
                 <Button
                   leftIcon={<Icon as={colorMode === 'light' ? FaMoon : FaSun} />}
@@ -235,6 +233,7 @@ const Navigation: React.FC = () => {
         </VStack>
       </Box>
 
+      {/* Theme Settings Modal */}
       <ThemeSettings
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
