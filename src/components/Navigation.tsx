@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'; 
 import {
   Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay,
-  VStack, Box, Heading, Spacer, Icon, useDisclosure, useColorModeValue, useColorMode, useToast,
+  VStack, Box, Spacer, Icon, useDisclosure, useColorModeValue, useColorMode, useToast,
   HStack, Text, Divider
 } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
@@ -9,7 +9,6 @@ import { motion } from 'framer-motion';
 import {
   FaHome, FaTicketAlt, FaWallet, FaShoppingCart, FaCog, FaMoon, FaSun, FaSignOutAlt, FaBars
 } from 'react-icons/fa';
-import ThemeSettings from './ThemeSettings';
 import { useBreakpointValue } from '@chakra-ui/react';
 
 const MotionBox = motion(Box);
@@ -90,7 +89,6 @@ const NavItemComponent = ({ item, isActive }: { item: NavItemType; isActive: boo
 const Navigation: React.FC = () => {
   const location = useLocation();
   const { colorMode, toggleColorMode } = useColorMode();
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
@@ -101,21 +99,6 @@ const Navigation: React.FC = () => {
   const activeBgColor = useColorModeValue('brand.50', 'gray.700');
   const textColor = useColorModeValue('gray.600', 'gray.300');
   const activeTextColor = useColorModeValue('brand.500', 'brand.200');
-
-  const handleThemeChange = (theme: string) => {
-    if (theme === 'dark' && colorMode === 'light') toggleColorMode();
-    else if (theme === 'light' && colorMode === 'dark') toggleColorMode();
-  };
-
-  const handleLanguageChange = (language: string) => {
-    toast({
-      title: 'Language Updated',
-      description: `Switched to ${language}`,
-      status: 'success',
-      duration: 2000,
-      isClosable: true,
-    });
-  };
 
   useEffect(() => {
     const handleSwipe = (e: TouchEvent) => {
@@ -139,7 +122,7 @@ const Navigation: React.FC = () => {
         left="20px"
         zIndex={1001}
         p={2}
-        margin={0} // Reduced padding around the button
+        margin={0}
       >
         <Icon as={FaBars} w={6} h={6} />
       </Button>
@@ -151,7 +134,7 @@ const Navigation: React.FC = () => {
           <DrawerCloseButton />
           <DrawerHeader color={drawerHeaderColor}></DrawerHeader>
           <DrawerBody color={drawerBodyColor} p={0}>
-            <VStack spacing={2} align="stretch" m={0} p={0}> {/* Ensure no extra margins or padding */}
+            <VStack spacing={2} align="stretch" m={0} p={0}>
               {navItems.map((item) => (
                 <NavItemComponent
                   key={item.path}
@@ -172,33 +155,21 @@ const Navigation: React.FC = () => {
 
               {/* Settings Button */}
               <MotionBox variants={buttonVariants} whileHover="hover" whileTap="tap" initial="initial" width="100%">
-                <Button
-                  leftIcon={<Icon as={FaCog} />}
-                  variant="ghost"
-                  width="100%"
-                  justifyContent="flex-start"
-                  onClick={() => setIsSettingsOpen(true)}
-                  color={textColor}
-                  _hover={{ bg: activeBgColor, color: activeTextColor }}
-                >
-                  Settings
-                </Button>
+                <Link to="/settings">
+                  <Button
+                    leftIcon={<Icon as={FaCog} />}
+                    variant="ghost"
+                    width="100%"
+                    justifyContent="flex-start"
+                    color={textColor}
+                    _hover={{ bg: activeBgColor, color: activeTextColor }}
+                  >
+                    Settings
+                  </Button>
+                </Link>
               </MotionBox>
 
-              {/* Theme Toggle */}
-              <MotionBox variants={buttonVariants} whileHover="hover" whileTap="tap" initial="initial" width="100%">
-                <Button
-                  leftIcon={<Icon as={colorMode === 'light' ? FaMoon : FaSun} />}
-                  variant="ghost"
-                  width="100%"
-                  justifyContent="flex-start"
-                  onClick={toggleColorMode}
-                  color={textColor}
-                  _hover={{ bg: activeBgColor, color: activeTextColor }}
-                >
-                  {colorMode === 'light' ? 'Dark Mode' : 'Light Mode'}
-                </Button>
-              </MotionBox>
+              {/* Theme Toggle button removed */}
             </VStack>
           </DrawerBody>
         </DrawerContent>
@@ -211,13 +182,12 @@ const Navigation: React.FC = () => {
         left={0}
         top={0}
         bottom={0}
-        width={{ base: '70px', sm: '240px' }} // Adjust sidebar width based on screen size
+        width={{ base: '70px', sm: '240px' }}
         bg={navBgColor}
         borderRight="1px"
         p={4}
         zIndex={1000}
         display={{ base: "none", md: "block" }}
-        
       >
         <VStack spacing={8} align="stretch" height="100%">
           <VStack spacing={2} align="stretch">
@@ -243,31 +213,23 @@ const Navigation: React.FC = () => {
               Logout
             </Button>
 
-            {/* Settings Button */}
-            <Button
-              leftIcon={<Icon as={FaCog} />}
-              variant="ghost"
-              width="100%"
-              justifyContent="flex-start"
-              onClick={() => setIsSettingsOpen(true)}
-              color={textColor}
-              _hover={{ bg: activeBgColor, color: activeTextColor }}
-            >
-              Settings
-            </Button>
+            {/* Settings Button in Desktop Sidebar */}
+            <MotionBox variants={buttonVariants} whileHover="hover" whileTap="tap" initial="initial" width="100%">
+              <Link to="/settings">
+                <Button
+                  leftIcon={<Icon as={FaCog} />}
+                  variant="ghost"
+                  width="100%"
+                  justifyContent="flex-start"
+                  color={textColor}
+                  _hover={{ bg: activeBgColor, color: activeTextColor }}
+                >
+                  Settings
+                </Button>
+              </Link>
+            </MotionBox>
 
-            {/* Theme Toggle */}
-            <Button
-              leftIcon={<Icon as={colorMode === 'light' ? FaMoon : FaSun} />}
-              variant="ghost"
-              width="100%"
-              justifyContent="flex-start"
-              onClick={toggleColorMode}
-              color={textColor}
-              _hover={{ bg: activeBgColor, color: activeTextColor }}
-            >
-              {colorMode === 'light' ? 'Dark Mode' : 'Light Mode'}
-            </Button>
+            {/* Theme Toggle button removed */}
           </VStack>
         </VStack>
       </Box>

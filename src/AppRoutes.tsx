@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 
@@ -9,8 +9,11 @@ import TicketMarketplace from './pages/TicketMarketplace';
 import MyTickets from './pages/MyTickets';
 import WalletConnect from './pages/WalletConnect';
 import WalletAddress from './pages/WalletAddress';
+import Settings from './pages/Settings';
 
 const AppRoutes: React.FC = () => {
+  const location = useLocation();
+  
   return (
     <Box 
       minH="100vh"
@@ -27,13 +30,14 @@ const AppRoutes: React.FC = () => {
       maxW={{ base: "100%", md: "1600px" }}
       mx="auto"
     >
-      <AnimatePresence mode="wait">
-        <Routes>
+      <AnimatePresence mode="wait" initial={false}>
+        <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/marketplace" element={<TicketMarketplace />} />
           <Route path="/my-tickets" element={<MyTickets />} />
           <Route path="/walletconnect" element={<WalletConnect />} />
           <Route path="/wallet/:walletId" element={<WalletAddress />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </AnimatePresence>
     </Box>
