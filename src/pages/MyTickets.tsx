@@ -136,8 +136,26 @@ const TicketCard = ({ ticket }: { ticket: Ticket }) => {
 
 const MyTickets = () => {
   return (
-    <Box p={8}>
-      <VStack spacing={8} align="stretch">
+    <Box 
+      p={8}
+      height="100vh"
+      overflowY="auto"
+      css={{
+        '&::-webkit-scrollbar': {
+          width: '4px',
+        },
+        '&::-webkit-scrollbar-track': {
+          width: '6px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: 'gray.500',
+          borderRadius: '24px',
+        },
+        scrollBehavior: 'smooth',
+        '-webkit-overflow-scrolling': 'touch'
+      }}
+    >
+      <VStack spacing={8} align="stretch" minH="100%" pb={8}>
         <Box>
           <Heading size="xl" mb={2}>
             My NFT Tickets
@@ -239,4 +257,4 @@ const MyTickets = () => {
   );
 };
 
-export default MyTickets; 
+export default MyTickets;

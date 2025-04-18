@@ -118,8 +118,8 @@ const Navigation: React.FC = () => {
         onClick={onOpen}
         display={{ base: "inline-block", md: "none" }}
         position="fixed"
-        top="20px"
-        left="20px"
+        top="70px"
+        left="15px"
         zIndex={1001}
         p={2}
         margin={0}
@@ -132,9 +132,9 @@ const Navigation: React.FC = () => {
         <DrawerOverlay />
         <DrawerContent bg={drawerBgColor}>
           <DrawerCloseButton />
-          <DrawerHeader color={drawerHeaderColor}></DrawerHeader>
+          <DrawerHeader color={drawerHeaderColor} height="100px"></DrawerHeader>
           <DrawerBody color={drawerBodyColor} p={0}>
-            <VStack spacing={2} align="stretch" m={0} p={0}>
+            <VStack spacing={5} align="stretch" m={0} pt={10} px={2}>
               {navItems.map((item) => (
                 <NavItemComponent
                   key={item.path}
@@ -142,12 +142,13 @@ const Navigation: React.FC = () => {
                   isActive={location.pathname === item.path}
                 />
               ))}
-              <Divider />
+              <Divider my={3} />
               <Button
                 leftIcon={<FaSignOutAlt />}
                 variant="ghost"
                 justifyContent="flex-start"
                 width="100%"
+                p={3}
                 onClick={() => toast({ title: 'Logged out', status: 'info', duration: 2000 })}
               >
                 Logout
@@ -160,6 +161,7 @@ const Navigation: React.FC = () => {
                     leftIcon={<Icon as={FaCog} />}
                     variant="ghost"
                     width="100%"
+                    p={3}
                     justifyContent="flex-start"
                     color={textColor}
                     _hover={{ bg: activeBgColor, color: activeTextColor }}
@@ -168,8 +170,6 @@ const Navigation: React.FC = () => {
                   </Button>
                 </Link>
               </MotionBox>
-
-              {/* Theme Toggle button removed */}
             </VStack>
           </DrawerBody>
         </DrawerContent>

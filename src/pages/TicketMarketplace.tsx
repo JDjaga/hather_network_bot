@@ -179,188 +179,214 @@ const TicketMarketplace = () => {
   };
 
   return (
-    <Box p={8}>
+    <Box 
+      p={8} 
+      height="100vh"
+      overflowY="auto"
+      css={{
+        '&::-webkit-scrollbar': {
+          width: '4px',
+        },
+        '&::-webkit-scrollbar-track': {
+          width: '6px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: 'gray.500',
+          borderRadius: '24px',
+        },
+        scrollBehavior: 'smooth',
+        '-webkit-overflow-scrolling': 'touch'
+      }}
+    >
       <MotionBox
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        p={6}
-        bg={bgColor}
-        borderRadius="xl"
-        borderWidth="1px"
-        borderColor={borderColor}
-        boxShadow="lg"
-        whileHover={{
-          boxShadow: "0 0 30px rgba(128, 90, 213, 0.5), 0 0 50px rgba(49, 130, 206, 0.3)",
-          transition: { 
-            duration: 0.3,
-            boxShadow: {
-              repeat: Infinity,
-              repeatType: "reverse",
-              duration: 2
-            }
-          }
-        }}
+        maxW="1200px"
+        mx="auto"
       >
-        <VStack spacing={6} align="stretch">
-          <MotionFlex
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ 
-              type: "spring",
-              stiffness: 100,
-              damping: 10,
-              duration: 0.5 
-            }}
-            p={4}
-            borderRadius="lg"
-            boxShadow="0 0 20px rgba(0,0,0,0.1)"
-            whileHover={{
-              boxShadow: "0 0 30px rgba(128, 90, 213, 0.5), 0 0 50px rgba(49, 130, 206, 0.3)",
-              scale: 1.02,
-              transition: { 
-                duration: 0.3,
-                boxShadow: {
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  duration: 2
-                }
+        </MotionBox>
+        <MotionBox
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          p={6}
+          bg={bgColor}
+          borderRadius="xl"
+          borderWidth="1px"
+          borderColor={borderColor}
+          boxShadow="lg"
+          whileHover={{
+            boxShadow: "0 0 30px rgba(128, 90, 213, 0.5), 0 0 50px rgba(49, 130, 206, 0.3)",
+            transition: { 
+              duration: 0.3,
+              boxShadow: {
+                repeat: Infinity,
+                repeatType: "reverse",
+                duration: 2
               }
-            }}
-            mb={6}
-          >
-            <Heading size="lg" bgGradient="linear(to-r, brand.500, blue.500)" bgClip="text">
-              NFT Ticket Marketplace
-            </Heading>
-          </MotionFlex>
+            }
+          }}
+        >
+          <VStack spacing={6} align="stretch">
+            <MotionFlex
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 100,
+                damping: 10,
+                duration: 0.5 
+              }}
+              p={4}
+              borderRadius="lg"
+              boxShadow="0 0 20px rgba(0,0,0,0.1)"
+              whileHover={{
+                boxShadow: "0 0 30px rgba(128, 90, 213, 0.5), 0 0 50px rgba(49, 130, 206, 0.3)",
+                scale: 1.02,
+                transition: { 
+                  duration: 0.3,
+                  boxShadow: {
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    duration: 2
+                  }
+                }
+              }}
+              mb={6}
+            >
+              <Heading size="lg" bgGradient="linear(to-r, brand.500, blue.500)" bgClip="text">
+                NFT Ticket Marketplace
+              </Heading>
+            </MotionFlex>
 
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-            {ticketData.map((ticket) => (
-              <MotionBox
-                key={ticket.id}
-                variants={itemVariants}
-                whileHover="hover"
-                whileTap="tap"
-                initial="initial"
-              >
-                <GlowBox
-                  p={4}
-                  bg={cardBgColor}
-                  borderRadius="xl"
-                  boxShadow="lg"
-                  glowColor={getChainColor(ticket.chain)}
-                  glowIntensity={0.6}
-                  variants={glowVariants}
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: `0 0 30px ${getChainColor(ticket.chain)}`,
-                    transition: {
-                      type: "spring",
-                      stiffness: 300,
-                      damping: 10
-                    }
-                  }}
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+              {ticketData.map((ticket) => (
+                <MotionBox
+                  key={ticket.id}
+                  variants={itemVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  initial="initial"
                 >
-                  <VStack spacing={4} align="stretch">
-                    <Box
-                      position="relative"
-                      borderRadius="lg"
-                      overflow="hidden"
-                      height="200px"
-                    >
-                      <MotionImage
-                        src={ticket.image}
-                        alt={ticket.name}
-                        objectFit="cover"
-                        width="100%"
-                        height="100%"
-                        variants={imageVariants}
-                        whileHover="hover"
-                      />
-                      <Badge
-                        position="absolute"
-                        top={2}
-                        right={2}
-                        colorScheme="brand"
-                        p={1}
-                        borderRadius="md"
+                  <GlowBox
+                    p={4}
+                    bg={cardBgColor}
+                    borderRadius="xl"
+                    boxShadow="lg"
+                    glowColor={getChainColor(ticket.chain)}
+                    glowIntensity={0.6}
+                    variants={glowVariants}
+                    whileHover={{
+                      scale: 1.05,
+                      boxShadow: `0 0 30px ${getChainColor(ticket.chain)}`,
+                      transition: {
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 10
+                      }
+                    }}
+                  >
+                    <VStack spacing={4} align="stretch">
+                      <Box
+                        position="relative"
+                        borderRadius="lg"
+                        overflow="hidden"
+                        height="200px"
                       >
-                        <HStack spacing={1}>
-                          <Icon as={getChainIcon(ticket.chain)} />
-                          <Text fontSize="xs">{ticket.chain}</Text>
-                        </HStack>
-                      </Badge>
-                    </Box>
-
-                    <VStack align="stretch" spacing={2}>
-                      <Heading size="md" noOfLines={1}>
-                        {ticket.name}
-                      </Heading>
-                      <Text color="gray.500" fontSize="sm">
-                        {ticket.collection}
-                      </Text>
-                      <HStack spacing={2}>
-                        <Icon as={CalendarIcon} color="gray.500" />
-                        <Text fontSize="sm" color="gray.600">
-                          {ticket.eventDate}
-                        </Text>
-                      </HStack>
-                      <HStack spacing={2}>
-                        <Icon as={MapIcon} color="gray.500" />
-                        <Text fontSize="sm" color="gray.600">
-                          {ticket.location}
-                        </Text>
-                      </HStack>
-                      <HStack justify="space-between" align="center">
-                        <Text fontWeight="bold" fontSize="lg">
-                          ${ticket.value}
-                        </Text>
-                        <Button
-                          leftIcon={<TicketIcon />}
+                        <MotionImage
+                          src={ticket.image}
+                          alt={ticket.name}
+                          objectFit="cover"
+                          width="100%"
+                          height="100%"
+                          variants={imageVariants}
+                          whileHover="hover"
+                        />
+                        <Badge
+                          position="absolute"
+                          top={2}
+                          right={2}
                           colorScheme="brand"
-                          size="sm"
-                          onClick={() => handleBuyTicket(ticket)}
+                          p={1}
+                          borderRadius="md"
                         >
-                          Buy Ticket
-                        </Button>
-                      </HStack>
-                    </VStack>
-                  </VStack>
-                </GlowBox>
-              </MotionBox>
-            ))}
-          </SimpleGrid>
-        </VStack>
-      </MotionBox>
+                          <HStack spacing={1}>
+                            <Icon as={getChainIcon(ticket.chain)} />
+                            <Text fontSize="xs">{ticket.chain}</Text>
+                          </HStack>
+                        </Badge>
+                      </Box>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="md">
-        <ModalOverlay />
-        <ModalContent bg={modalBgColor}>
-          <ModalHeader>Ticket QR Code</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            {selectedTicket && (
-              <VStack spacing={4}>
-                <Text fontWeight="bold">{selectedTicket.name}</Text>
-                <Text>Event Date: {selectedTicket.eventDate}</Text>
-                <Text>Location: {selectedTicket.location}</Text>
-                <Center p={4} bg="white" borderRadius="md">
-                  <QRCodeSVG
-                    value={generateQRData(selectedTicket)}
-                    size={200}
-                    level="H"
-                  />
-                </Center>
-                <Text fontSize="sm" color="gray.500">
-                  Scan this QR code at the event entrance
-                </Text>
-              </VStack>
-            )}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </Box>
-  );
+                      <VStack align="stretch" spacing={2}>
+                        <Heading size="md" noOfLines={1}>
+                          {ticket.name}
+                        </Heading>
+                        <Text color="gray.500" fontSize="sm">
+                          {ticket.collection}
+                        </Text>
+                        <HStack spacing={2}>
+                          <Icon as={CalendarIcon} color="gray.500" />
+                          <Text fontSize="sm" color="gray.600">
+                            {ticket.eventDate}
+                          </Text>
+                        </HStack>
+                        <HStack spacing={2}>
+                          <Icon as={MapIcon} color="gray.500" />
+                          <Text fontSize="sm" color="gray.600">
+                            {ticket.location}
+                          </Text>
+                        </HStack>
+                        <HStack justify="space-between" align="center">
+                          <Text fontWeight="bold" fontSize="lg">
+                            ${ticket.value}
+                          </Text>
+                          <Button
+                            leftIcon={<TicketIcon />}
+                            colorScheme="brand"
+                            size="sm"
+                            onClick={() => handleBuyTicket(ticket)}
+                          >
+                            Buy Ticket
+                          </Button>
+                        </HStack>
+                      </VStack>
+                    </VStack>
+                  </GlowBox>
+                </MotionBox>
+              ))}
+            </SimpleGrid>
+          </VStack>
+        </MotionBox>
+
+        <Modal isOpen={isOpen} onClose={onClose} size="md">
+          <ModalOverlay />
+          <ModalContent bg={modalBgColor}>
+            <ModalHeader>Ticket QR Code</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              {selectedTicket && (
+                <VStack spacing={4}>
+                  <Text fontWeight="bold">{selectedTicket.name}</Text>
+                  <Text>Event Date: {selectedTicket.eventDate}</Text>
+                  <Text>Location: {selectedTicket.location}</Text>
+                  <Center p={4} bg="white" borderRadius="md">
+                    <QRCodeSVG
+                      value={generateQRData(selectedTicket)}
+                      size={200}
+                      level="H"
+                    />
+                  </Center>
+                  <Text fontSize="sm" color="gray.500">
+                    Scan this QR code at the event entrance
+                  </Text>
+                </VStack>
+              )}
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </Box>
+    );
 };
 
-export default TicketMarketplace; 
+export default TicketMarketplace;
